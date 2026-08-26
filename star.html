@@ -175,6 +175,15 @@
           <option value="Black">Black</option>
         </select>
       </div>
+
+      <div>
+        <label for="gender">Motorista</label>
+        <select id="gender">
+          <option value="Todos">Homem ou mulher</option>
+          <option value="Mulher">Mulher</option>
+          <option value="Homem">Homem</option>
+        </select>
+      </div>
     </div>
 
     <button onclick="findDrivers()">Encontrar melhores motoristas</button>
@@ -192,15 +201,15 @@
 
 <script>
 const drivers = [
-  { name: "Marcos Silva", rating: 4.99, trips: 1840, category: "Comfort", positive: 99 },
-  { name: "Ana Beatriz", rating: 4.98, trips: 1260, category: "Black", positive: 98 },
-  { name: "Carlos Henrique", rating: 4.97, trips: 2340, category: "UberX", positive: 97 },
-  { name: "Juliana Costa", rating: 4.96, trips: 890, category: "Comfort", positive: 99 },
-  { name: "Rafael Santos", rating: 4.95, trips: 3100, category: "UberX", positive: 96 },
-  { name: "Camila Oliveira", rating: 4.94, trips: 720, category: "Black", positive: 98 },
-  { name: "Lucas Almeida", rating: 4.92, trips: 540, category: "UberX", positive: 95 },
-  { name: "Fernanda Lima", rating: 4.90, trips: 480, category: "Comfort", positive: 94 },
-  { name: "João Pedro", rating: 4.87, trips: 610, category: "UberX", positive: 93 }
+  { name: "Marcos Silva", gender: "Homem", rating: 4.99, trips: 1840, category: "Comfort", positive: 99 },
+  { name: "Ana Beatriz", gender: "Mulher", rating: 4.98, trips: 1260, category: "Black", positive: 98 },
+  { name: "Carlos Henrique", gender: "Homem", rating: 4.97, trips: 2340, category: "UberX", positive: 97 },
+  { name: "Juliana Costa", gender: "Mulher", rating: 4.96, trips: 890, category: "Comfort", positive: 99 },
+  { name: "Rafael Santos", gender: "Homem", rating: 4.95, trips: 3100, category: "UberX", positive: 96 },
+  { name: "Camila Oliveira", gender: "Mulher", rating: 4.94, trips: 720, category: "Black", positive: 98 },
+  { name: "Lucas Almeida", gender: "Homem", rating: 4.92, trips: 540, category: "UberX", positive: 95 },
+  { name: "Fernanda Lima", gender: "Mulher", rating: 4.90, trips: 480, category: "Comfort", positive: 94 },
+  { name: "João Pedro", gender: "Homem", rating: 4.87, trips: 610, category: "UberX", positive: 93 }
 ];
 
 function calculateScore(driver) {
@@ -214,11 +223,13 @@ function findDrivers() {
   const minRating = Number(document.getElementById("rating").value);
   const minTrips = Number(document.getElementById("trips").value);
   const category = document.getElementById("category").value;
+  const gender = document.getElementById("gender").value;
 
   const filtered = drivers
     .filter(driver => driver.rating >= minRating)
     .filter(driver => driver.trips >= minTrips)
     .filter(driver => category === "Todas" || driver.category === category)
+    .filter(driver => gender === "Todos" || driver.gender === gender)
     .map(driver => ({ ...driver, score: calculateScore(driver) }))
     .sort((a, b) => b.score - a.score);
 
@@ -244,6 +255,7 @@ function findDrivers() {
         <h3>${driver.name}</h3>
         <div class="stars">★ ${driver.rating.toFixed(2)}</div>
         <div class="meta">
+          ${driver.gender} ·
           ${driver.trips.toLocaleString("pt-BR")} viagens ·
           ${driver.positive}% de avaliações positivas
         </div>
